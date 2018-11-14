@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">MusicKingQuiz</string>
+    <string name="play_now">PLAY NOW</string>
+    <string name="music_king">Music King</string>
+    <string name="quiz">QUIZ</string>
+    <string name="play">Play</string>
+    <string name="_20">20</string>
+    <string name="cristian_castro_azul">Cristian Castro - Azul</string>
+    <string name="metallica_nothing_else_matter">Metallica - Nothing else matter</string>
+    <string name="linkin_park_in_the_end">Linkin Park - In the end</string>
+    <string name="todo">TODO</string>
+</resources>
