@@ -15,14 +15,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/buttonstyle"
         android:onClick="Responder"
         android:text="Responder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment2" />
+        app:layout_constraintTop_toBottomOf="@+id/fragment" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -36,27 +36,17 @@
 
     <fragment
         android:id="@+id/fragment"
-        android:name="es.usj.musickingquiz.PlayerFragment"
+        android:name="es.usj.musickingquiz.Fragments.GameFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <fragment
-        android:id="@+id/fragment2"
-        android:name="es.usj.musickingquiz.FormFragment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment" />
 
 
 </android.support.constraint.ConstraintLayout>

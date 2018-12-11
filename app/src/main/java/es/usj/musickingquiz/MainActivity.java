@@ -14,8 +14,10 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.AnimationRes;
 
+import es.usj.musickingquiz.Fragments.LoadingFragment;
+
 @EActivity
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoadingFragment.OnFinishedLoadListener {
 
     //Variables
     @ViewById
@@ -41,7 +43,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        LoadingFragment loadingFragment = new LoadingFragment();
 
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_root_layout, loadingFragment).commit();
 
         l1.setAnimation(uptodown);
         l2.setAnimation(downtoup);
@@ -70,6 +74,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onFinishedLoad() {
+        btnPlay.setEnabled(true);
+    }
 }
 
 
