@@ -12,23 +12,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/btnSonar7"
+        <RadioGroup
+            android:id="@+id/rgOptions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="36dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/buttonstyle"
-            android:text="Responder"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/radioGroup2" />
-
-        <RadioGroup
-            android:id="@+id/radioGroup2"
-            android:layout_width="276dp"
-            android:layout_height="106dp"
             android:layout_marginStart="26dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="26dp"
@@ -38,19 +25,19 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <RadioButton
-                android:id="@+id/radioButton"
+                android:id="@+id/rbtn1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:buttonTint="@color/colorPrimaryDark"
 
-                android:checked="true"
+                android:checked="false"
                 android:text="@string/cristian_castro_azul"
                 android:textColor="@color/lightorange"
                 android:textSize="16sp" />
 
             <RadioButton
-                android:id="@+id/radioButton2"
+                android:id="@+id/rbtn2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -61,7 +48,7 @@
                 android:textSize="16sp" />
 
             <RadioButton
-                android:id="@+id/radioButton3"
+                android:id="@+id/rbtn3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

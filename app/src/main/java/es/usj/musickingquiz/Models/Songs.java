@@ -5,4 +5,9 @@ public class Songs {
     public String name;
     public String author;
     public String file;
+
+
+    public String getTitleAndAuthor() {
+        return name + "/" + author;
+    }
 }
