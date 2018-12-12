@@ -37,6 +37,7 @@ import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
 public class LoadingFragment extends Fragment {
 
+
     ProgressBar progressBar;
     private long downloadID;
     private Settings settings = new Settings();
@@ -65,7 +66,6 @@ public class LoadingFragment extends Fragment {
 
         downloadManager = (DownloadManager) getActivity().getSystemService(DOWNLOAD_SERVICE);
         getContext().registerReceiver(onComplete, new IntentFilter(downloadManager.ACTION_DOWNLOAD_COMPLETE));
-
 
         inicializar();
 
@@ -126,7 +126,7 @@ public class LoadingFragment extends Fragment {
             ArrayList fullSongsList = new ArrayList(Arrays.asList(songs));
             Collections.shuffle(fullSongsList);
 
-            List<Songs> tenSongs = fullSongsList.subList(0, settings.numberOfSongsToDownload);
+            List<Songs> tenSongs = fullSongsList.subList(0, settings.numberOfSongsToPlay);
 
 
             shared.songsList = new ArrayList(tenSongs);

@@ -12,51 +12,30 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <Button
+            android:id="@+id/btnGiveAnswer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/buttonstyle"
+            android:text="@string/responder"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rgOptions" />
+
         <RadioGroup
             android:id="@+id/rgOptions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="26dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="26dp"
+            android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.511"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvCountDown">
 
-            <RadioButton
-                android:id="@+id/rbtn1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:buttonTint="@color/colorPrimaryDark"
-
-                android:checked="false"
-                android:text="@string/cristian_castro_azul"
-                android:textColor="@color/lightorange"
-                android:textSize="16sp" />
-
-            <RadioButton
-                android:id="@+id/rbtn2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:buttonTint="@color/colorPrimaryDark"
-                android:checked="false"
-                android:text="@string/linkin_park_in_the_end"
-                android:textColor="@color/lightorange"
-                android:textSize="16sp" />
-
-            <RadioButton
-                android:id="@+id/rbtn3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:buttonTint="@color/colorPrimaryDark"
-                android:checked="false"
-                android:text="@string/metallica_nothing_else_matter"
-                android:textColor="@color/lightorange"
-                android:textSize="16sp" />
         </RadioGroup>
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -90,5 +69,6 @@
             app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/profile_image" />
+
     </android.support.constraint.ConstraintLayout>
 </FrameLayout>

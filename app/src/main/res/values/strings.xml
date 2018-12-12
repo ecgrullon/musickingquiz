@@ -12,5 +12,9 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="error_Message">Ocurrió un error al intentar reproducir la canción</string>
+    <string name="error_Message">Ocurrió un error al intentar reproducir el archivo</string>
+    <string name="respuesta_correcta">Respuesta Correcta</string>
+    <string name="respuesta_incorrecta">Respuesta incorrecta</string>
+    <string name="responder">Responder</string>
+    <string name="descargando_recursos">Descargando recursos...</string>
 </resources>
