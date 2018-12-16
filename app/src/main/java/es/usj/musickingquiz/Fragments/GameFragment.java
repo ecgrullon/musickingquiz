@@ -219,14 +219,18 @@ public class GameFragment extends Fragment {
 
     @Override
     public void onStop() {
-        mp.stop();
+        if (mp.isPlaying()) mp.pause();
         super.onStop();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mp != null) mp.start();
     }
 
     private void callFinishDialog() {
         finishDialog fragment = finishDialog.newInstance(String.valueOf(aciertos), String.valueOf(settings.numberOfSongsToPlay), String.valueOf(chronometer.getText()));
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.activity_quiz_root_layout, fragment).commit();
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.activity_quiz_root_layout, fragment).addToBackStack(null).commit();
     }
-
-
 }

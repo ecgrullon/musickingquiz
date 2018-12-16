@@ -1,12 +1,14 @@
 package es.usj.musickingquiz.Dialogs;
 
 
-import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,8 +23,11 @@ public class finishDialog extends Fragment {
 
     Button btnSalir;
     Button btnVolverAJugar;
+    CardView cvPopup;
     RelativeLayout rl_root;
     TextView tvScore;
+
+    MediaPlayer mp;
 
     public finishDialog() {
         // Required empty public constructor
@@ -41,6 +46,8 @@ public class finishDialog extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.dialog_finish, container, false);
+        cvPopup = view.findViewById(R.id.cv_finish_popup);
+        cvPopup.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.uptodown));
 
         tvScore = view.findViewById(R.id.tv_score);
 
@@ -56,11 +63,8 @@ public class finishDialog extends Fragment {
         btnVolverAJugar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = getActivity().getBaseContext().getPackageManager()
-                        .getLaunchIntentForPackage(getActivity().getBaseContext().getPackageName());
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                getActivity().finish();
-                startActivity(i);
+                removeThisFragment();
+                getActivity().recreate();
             }
         });
 
@@ -72,6 +76,7 @@ public class finishDialog extends Fragment {
             }
         });
 
+        reproducirAudio();
         setScore();
         return view;
     }
@@ -83,5 +88,24 @@ public class finishDialog extends Fragment {
     private void salir() {
         getActivity().finish();
         getActivity().moveTaskToBack(true);
+    }
+
+    private void reproducirAudio() {
+
+        if (mp != null) mp.release();
+        mp = MediaPlayer.create(this.getContext(), R.raw.bubblegumpuzzler);
+        mp.setLooping(true);
+        mp.start();
+    }
+
+    @Override
+    public void onStop() {
+        mp.stop();
+        super.onStop();
+    }
+
+    private void removeThisFragment() {
+        mp.stop();
+        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
     }
 }

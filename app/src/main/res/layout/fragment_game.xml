@@ -20,6 +20,7 @@
             android:layout_marginTop="32dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/buttonstyle"
+            android:foreground="?attr/selectableItemBackground"
             android:text="@string/responder"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.501"

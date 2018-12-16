@@ -22,4 +22,8 @@
     <string name="no_keep">No, cancelar</string>
     <string name="files_download_failed">Files download failed</string>
     <string name="server_connection_failed">Server connection failed</string>
+    <string name="quiz_completado">Quiz Completado!!!</string>
+    <string name="has_acertado">Has acertado:</string>
+    <string name="volver_a_jugar">Volver a Jugar</string>
+    <string name="salir">Salir</string>
 </resources>
