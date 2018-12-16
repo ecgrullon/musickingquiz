@@ -20,7 +20,6 @@ import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.AnimationRes;
 
 import es.usj.musickingquiz.Fragments.LoadingFragment;
-import es.usj.musickingquiz.Models.Shared;
 
 @EActivity
 public class MainActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback, LoadingFragment.OnFinishedLoadListener {
@@ -67,8 +66,6 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
 
     @Override
     protected void onStart() {
-
-        Shared.reset();
 
         l1.setAnimation(uptodown);
         l2.setAnimation(downtoup);

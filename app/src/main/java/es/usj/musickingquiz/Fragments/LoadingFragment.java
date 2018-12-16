@@ -15,7 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 
@@ -37,6 +37,7 @@ import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
 public class LoadingFragment extends Fragment {
 
+    private TextView tvDownloading;
 
     ProgressBar progressBar;
     private long downloadID;
@@ -64,6 +65,7 @@ public class LoadingFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_loading, container, false);
         progressBar = v.findViewById(R.id.progressBar);
 
+        tvDownloading = v.findViewById(R.id.tv_downloading);
         downloadManager = (DownloadManager) getActivity().getSystemService(DOWNLOAD_SERVICE);
         getContext().registerReceiver(onComplete, new IntentFilter(downloadManager.ACTION_DOWNLOAD_COMPLETE));
 
@@ -73,7 +75,7 @@ public class LoadingFragment extends Fragment {
     }
 
     private void inicializar() {
-        if (shared.playList == null) {
+        if (shared.songsList == null) {
             if (checkIfFileExists(settings.jsonFileName))
                 setSongsList();
             else
@@ -94,11 +96,11 @@ public class LoadingFragment extends Fragment {
         try {
             Uri Download_Uri = Uri.parse(settings.jsonFileURL);
             DownloadManager.Request request = new DownloadManager.Request(Download_Uri);
-
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
             request.setDestinationInExternalFilesDir(this.getContext(), DIRECTORY_DOWNLOADS, settings.jsonFileName);
             downloadManager.enqueue(request);
         } catch (Exception e) {
-            Toast.makeText(this.getContext(), "No se ha podido conectar al servidor", Toast.LENGTH_LONG).show();
+            tvDownloading.setText(getString(R.string.server_connection_failed));
         }
 
     }
@@ -127,10 +129,7 @@ public class LoadingFragment extends Fragment {
             Collections.shuffle(fullSongsList);
 
             List<Songs> tenSongs = fullSongsList.subList(0, settings.numberOfSongsToPlay);
-
-
             shared.songsList = new ArrayList(tenSongs);
-            shared.playList = new ArrayList(tenSongs);
             inicializar();
         } catch (Exception e) {
             Log.d("ERROR:", e.getMessage() + e.getCause());
@@ -158,11 +157,12 @@ public class LoadingFragment extends Fragment {
         try {
             Uri Download_Uri = Uri.withAppendedPath(Uri.parse(settings.resourcesURL), songFileName);
             DownloadManager.Request request = new DownloadManager.Request(Download_Uri);
-
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
             request.setDestinationInExternalFilesDir(this.getContext(), DIRECTORY_DOWNLOADS, songFileName);
             downloadID = downloadManager.enqueue(request);
         } catch (Exception e) {
-            Toast.makeText(this.getContext(), "No se ha podido descargar algunos de los archivos", Toast.LENGTH_LONG).show();
+//            Toast.makeText(this.getContext(), "No se ha podido descargar algunos de los archivos", Toast.LENGTH_LONG).show();
+            tvDownloading.setText(getString(R.string.files_download_failed));
         }
     }
 
@@ -175,13 +175,13 @@ public class LoadingFragment extends Fragment {
 
 
     private boolean AreAllSongsDownloaded() {
-        progressBar.setProgress(0);
-        for (Songs song : shared.playList) {
+        progressBar.setProgress(settings.getPercentOfCompletionPerFile());
+        for (Songs song : shared.songsList) {
             if (!checkIfFileExists(song.file)) {
                 downloadSong(song.file);
                 return false;
             } else {
-                progressBar.setProgress(progressBar.getProgress() + 10);
+                progressBar.setProgress(progressBar.getProgress() + settings.getPercentOfCompletionPerFile());
             }
         }
         return true;

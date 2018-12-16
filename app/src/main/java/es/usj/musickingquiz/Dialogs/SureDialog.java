@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 
+import es.usj.musickingquiz.R;
+
 public class SureDialog extends DialogFragment {
 
 
@@ -16,14 +18,14 @@ public class SureDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage("klk vasé")
-                .setPositiveButton("dale", new DialogInterface.OnClickListener() {
+        builder.setMessage(getString(R.string.exit_confirmation_message))
+                .setPositiveButton(getString(R.string.yes_exit), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // FIRE ZE MISSILES!
                         mListener.onDialogPositiveClick(SureDialog.this);
                     }
                 })
-                .setNegativeButton("dejalo", new DialogInterface.OnClickListener() {
+                .setNegativeButton(getString(R.string.no_keep), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // User cancelled the dialog
                         mListener.onDialogNegativeClick(SureDialog.this);

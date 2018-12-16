@@ -3,7 +3,6 @@ package es.usj.musickingquiz.Fragments;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
@@ -11,15 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+import es.usj.musickingquiz.Dialogs.finishDialog;
 import es.usj.musickingquiz.Models.Settings;
 import es.usj.musickingquiz.Models.Shared;
 import es.usj.musickingquiz.Models.Songs;
@@ -31,16 +31,18 @@ public class GameFragment extends Fragment {
 
 
     int aciertos = 0;
-    TextView tvCountDown;
     private RadioGroup rgOptions;
     Toast notification;
     private Button btnGiveAnswer;
     private Settings settings = new Settings();
     private Shared shared = new Shared();
     private ArrayList<Songs> answerOptions = null;
+
+    int previousSelection = -1;
     private Songs currentSongToPlay;
     private MediaPlayer mp;
-
+    Chronometer chronometer;
+    private ArrayList<Songs> playList = null;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,38 +54,32 @@ public class GameFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_game, container, false);
-        tvCountDown = view.findViewById(R.id.tvCountDown);
 
         rgOptions = view.findViewById(R.id.rgOptions);
 
         btnGiveAnswer = view.findViewById(R.id.btnGiveAnswer);
-
         btnGiveAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Responder();
+                responder();
             }
         });
 
         if (shared.areAllSongsDownloaded) {
+            loadPlayList();
             playNextSong();
             getAnswerOptions();
             setAnswers();
         }
-        new CountDownTimer(20000, 1000) {
-            public void onTick(long millisUntilFinished) {
-                tvCountDown.setText("" + millisUntilFinished / 1000);
-                //here you can have your logic to set text to edittext
-            }
-
-            public void onFinish() {
-                tvCountDown.setText("done!");
-            }
-        }.start();
-
+        chronometer = view.findViewById(R.id.chronometer);
+        chronometer.start();
         return view;
     }
 
+    private void loadPlayList() {
+        playList = new ArrayList(shared.songsList);
+        Collections.shuffle(playList);
+    }
 
 
     public String getSelectedOption() {
@@ -99,18 +95,35 @@ public class GameFragment extends Fragment {
         rgOptions.removeAllViews();
         if (answerOptions != null) {
             for (Songs songoption : answerOptions) {
-                RadioButton rb = new RadioButton(getContext());
-                rb.setText(songoption.getTitleAndAuthor());
-                rb.setTextColor(ContextCompat.getColor(getContext(), R.color.lightorange));
-                rb.setTextSize(16);
-                rb.setButtonTintList(ContextCompat.getColorStateList(getContext(), R.color.radiobutton_color));
-                rgOptions.addView(rb);
+                addNewRadioButton(songoption.getTitleAndAuthor());
             }
         }
     }
 
+    private void addNewRadioButton(String value) {
+        final RadioButton rb = new RadioButton(getContext());
+        rb.setText(value);
+        rb.setTextColor(ContextCompat.getColor(getContext(), R.color.lightorange));
+        rb.setTextSize(16);
+        rb.setPaddingRelative(5, 5, 5, 5);
+        rb.setButtonTintList(ContextCompat.getColorStateList(getContext(), R.color.radiobutton_color));
+        rb.setClickable(true);
+        rb.setFocusable(true);
+        rb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (rb.getId() == previousSelection) {
+                    responder();
+                }
+                previousSelection = rgOptions.getCheckedRadioButtonId();
+            }
+        });
+
+        rgOptions.addView(rb);
+    }
+
     private void playNextSong() {
-        currentSongToPlay = shared.playList.get(0);
+        currentSongToPlay = playList.get(0);
 
         try {
             startMediaPlayer(currentSongToPlay.file);
@@ -120,10 +133,10 @@ public class GameFragment extends Fragment {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
 
-                    Responder();
+                    responder();
                 }
             });
-            shared.playList.remove(0);
+            playList.remove(0);
         } catch (Exception e) {
             Toast.makeText(this.getContext(), getString(R.string.error_Message), Toast.LENGTH_LONG).show();
         }
@@ -167,21 +180,27 @@ public class GameFragment extends Fragment {
 
     }
 
-    public void Responder() {
+    public void responder() {
 
         nextQuestion();
     }
 
     private void nextQuestion() {
-        if (shared.playList.size() > 0) {
+        if (playList.size() > 0) {
             validarRespuesta();
             playNextSong();
             getAnswerOptions();
             setAnswers();
         } else {
-            mp.release();
-            Toast.makeText(this.getContext(), "Se acabo, acertaste " + aciertos + " de " + settings.numberOfSongsToPlay, Toast.LENGTH_LONG).show();
+            finalizarJuego();
         }
+    }
+
+    private void finalizarJuego() {
+        mp.stop();
+        chronometer.stop();
+        btnGiveAnswer.setEnabled(false);
+        callFinishDialog();
     }
 
     private void validarRespuesta() {
@@ -193,7 +212,7 @@ public class GameFragment extends Fragment {
             notification = Toast.makeText(this.getContext(), getString(R.string.respuesta_incorrecta), Toast.LENGTH_LONG);
 
         }
-        notification.setGravity(Gravity.BOTTOM, 0, 0);
+        notification.setGravity(Gravity.BOTTOM, 0, 50);
         notification.show();
     }
 
@@ -204,6 +223,10 @@ public class GameFragment extends Fragment {
         super.onStop();
     }
 
+    private void callFinishDialog() {
+        finishDialog fragment = finishDialog.newInstance(String.valueOf(aciertos), String.valueOf(settings.numberOfSongsToPlay), String.valueOf(chronometer.getText()));
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.activity_quiz_root_layout, fragment).commit();
+    }
 
 
 }

@@ -19,9 +19,6 @@ public class QuizPage extends AppCompatActivity implements SureDialog.NoticeDial
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz_page);
-
-
-
     }
 
     @Override
@@ -34,7 +31,8 @@ public class QuizPage extends AppCompatActivity implements SureDialog.NoticeDial
 
     @Override
     public void onDialogPositiveClick(DialogFragment dialog) {
-        super.onBackPressed();
+        finish();
+        moveTaskToBack(true);
     }
 
     @Override

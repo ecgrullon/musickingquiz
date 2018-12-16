@@ -6,11 +6,9 @@ public class Shared {
 
     public static boolean areAllSongsDownloaded = false;
     public static ArrayList<Songs> songsList = null;
-    public static ArrayList<Songs> playList = null;
 
     public static void reset() {
         areAllSongsDownloaded = false;
         songsList = null;
-        playList = null;
     }
 }
